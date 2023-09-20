@@ -88,13 +88,26 @@ func main() {
             log.Fatalf("Error writing JSON to file: %v", err)
         }
 
-        // Extract and print the price per unit cost for each instance type
+        // Extract the price per unit cost for each instance type
+        // Extract the desired fields from the JSON response
         for _, priceListItem := range result.PriceList {
-//             instanceType := priceListItem["product"].(map[string]interface{})["attributes"].(map[string]interface{})["instanceType"].(string)
-//
-//             // Extract price per unit (modify the path based on the JSON structure)
-//             pricePerUnit := priceListItem["terms"].(map[string]interface{})["OnDemand"].(map[string]interface{})["YOUR_PRICE_DIMENSION_KEY"].(map[string]interface{})["pricePerUnit"].(map[string]interface{})["USD"].(string)
+            terms := priceListItem["terms"].(map[string]interface{})["OnDemand"].(map[string]interface{})
+            for _, product := range terms {
+                priceDimensions := product.(map[string]interface{})["priceDimensions"].(map[string]interface{})
+                firstNestedElement := map[string]interface{}{} // Initialize an empty map for the first nested element
 
-            fmt.Printf("Instance Type: %s, Price Per Unit: %s\n", priceListItem["terms"])
+                // Iterate over the price dimensions to access the first nested element
+                for _, dimension := range priceDimensions {
+                    firstNestedElement = dimension.(map[string]interface{})
+                    break // Break after accessing the first nested element
+                }
+
+                // Extract the price per unit cost and instance type from the first nested element
+                pricePerUnit := firstNestedElement["pricePerUnit"].(map[string]interface{})["USD"].(string)
+                instanceType := firstNestedElement["description"].(string)
+
+                fmt.Printf("Instance Type: %s, Price Per Unit: %s\n", instanceType, pricePerUnit)
+            }
         }
-    }
+
+}
