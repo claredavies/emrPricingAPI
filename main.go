@@ -37,18 +37,8 @@ func main() {
 
         // Define the filter to get EC2 On-Demand prices
         input := &pricing.GetProductsInput{
-            ServiceCode: aws.String("AmazonEC2"),
+            ServiceCode: aws.String("ElasticMapReduce"),
             Filters: []*pricing.Filter{
-                {
-                    Type:  aws.String("TERM_MATCH"),
-                    Field: aws.String("productFamily"),
-                    Value: aws.String("Compute Instance"),
-                },
-                {
-                    Type:  aws.String("TERM_MATCH"),
-                    Field: aws.String("tenancy"),
-                    Value: aws.String("Shared"),
-                },
                 {
                     Type:  aws.String("TERM_MATCH"),
                     Field: aws.String("location"),
@@ -56,15 +46,14 @@ func main() {
                 },
                 {
                     Type:  aws.String("TERM_MATCH"),
-                    Field: aws.String("operatingSystem"),
-                    Value: aws.String("Linux"),
+                    Field: aws.String("instanceType"),
+                    Value: aws.String("C6g.12xlarge"), // Add the instance type filter here
                 },
                 {
                     Type:  aws.String("TERM_MATCH"),
-                    Field: aws.String("instanceType"),
-                    Value: aws.String("t2.micro"), // Add the instance type filter here
+                    Field: aws.String("softwareType"),
+                    Value: aws.String("EMR"), // Add the instance type filter here
                 },
-                // You can add more filters as needed
             },
         }
 
