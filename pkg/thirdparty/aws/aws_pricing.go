@@ -2,7 +2,8 @@ package aws
 
 import (
     "encoding/json"
-    "fmt"
+    "github.com/google/uuid"
+//     "fmt"
     "strconv"
     "os"
     "github.com/aws/aws-sdk-go/aws"
@@ -112,7 +113,7 @@ func extractSinglePrice(priceListItem map[string]interface{}) Price {
                 priceDescription := dimension.(map[string]interface{})["description"].(string)
 
                 price = Price{
-                    ID:              "", // Set the ID as needed
+                    ID:              uuid.New().String(), // Set the ID as needed
                     ServiceType:     serviceCode,
                     InstanceType:    instanceType,
                     Market:          reservationType,

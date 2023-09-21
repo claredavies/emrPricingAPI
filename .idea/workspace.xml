@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Adding in Price struct">
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Adding in filters as parameters e.g InstanceType">
+      <change afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/aws_pricing_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/thirdparty/aws/aws_pricing.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/aws_pricing.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +103,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695292561815</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Adding in filters as parameters e.g InstanceType">
+      <option name="closed" value="true" />
+      <created>1695304333505</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1695304333506</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -112,6 +122,7 @@
     <MESSAGE value="Removed the need for access keys in the code" />
     <MESSAGE value="Moved aws pricing calls to separate directory" />
     <MESSAGE value="Adding in Price struct" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding in Price struct" />
+    <MESSAGE value="Adding in filters as parameters e.g InstanceType" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding in filters as parameters e.g InstanceType" />
   </component>
 </project>
