@@ -3,24 +3,13 @@ package aws
 import (
     "encoding/json"
     "github.com/google/uuid"
-//     "fmt"
     "strconv"
     "os"
+    "emrPricingAPI/models"
     "github.com/aws/aws-sdk-go/aws"
     "github.com/aws/aws-sdk-go/aws/session"
     "github.com/aws/aws-sdk-go/service/pricing"
 )
-
-type Price struct {
-    ID              string  `json:"ID"`
-    ServiceType     string  `json:"ServiceType"`
-    InstanceType    string  `json:"InstanceType"`
-    Market          string  `json:"Market"`
-    Unit            string  `json:"Unit"`
-    PricePerUnit    float64 `json:"PricePerUnit"`
-    PriceDescription string  `json:"PriceDescription"`
-    UpdatedAt       string  `json:"UpdatedAt"`
-}
 
 func commonFetchAwsPriceList(region string, filter *pricing.GetProductsInput) (*pricing.GetProductsOutput, error) {
 	sess, err := session.NewSession(&aws.Config{
@@ -42,7 +31,7 @@ func commonFetchAwsPriceList(region string, filter *pricing.GetProductsInput) (*
 	return result, nil
 }
 
-func commonFetchPricingData(region string, filter *pricing.GetProductsInput) ([]Price, error) {
+func commonFetchPricingData(region string, filter *pricing.GetProductsInput) ([]models.Price, error) {
 	result, err := commonFetchAwsPriceList(region, filter)
 	if err != nil {
 		return nil, err
@@ -66,18 +55,18 @@ func FetchPricingDataJson(region string, serviceCode string) error {
 	return nil
 }
 
-func FetchPricingData(region string, serviceCode string) ([]Price, error) {
+func FetchPricingData(region string, serviceCode string) ([]models.Price, error) {
 	filter := getInputNoFilter(serviceCode)
     return commonFetchPricingData(region, filter)
 }
 
-func FetchPricingDataFilter(region string, serviceCode string, location string, instanceType string) ([]Price, error) {
+func FetchPricingDataFilter(region string, serviceCode string, location string, instanceType string) ([]models.Price, error) {
 	filter := defineFilter(serviceCode, location, instanceType)
     return commonFetchPricingData(region, filter)
 }
 
-func extractPricingInformation(result *pricing.GetProductsOutput) []Price {
-    var prices []Price
+func extractPricingInformation(result *pricing.GetProductsOutput) []models.Price {
+    var prices []models.Price
 
     for _, priceListItem := range result.PriceList {
         price := extractSinglePrice(priceListItem)
@@ -87,7 +76,7 @@ func extractPricingInformation(result *pricing.GetProductsOutput) []Price {
     return prices
 }
 
-func extractSinglePrice(priceListItem map[string]interface{}) Price {
+func extractSinglePrice(priceListItem map[string]interface{}) models.Price {
     // Extract product attributes
     productAttributes, _ := priceListItem["product"].(map[string]interface{})["attributes"].(map[string]interface{})
     instanceType, _ := extractInstanceType(productAttributes)
@@ -95,7 +84,7 @@ func extractSinglePrice(priceListItem map[string]interface{}) Price {
     serviceCode := productAttributes["servicecode"].(string)
 
     // Initialize price variables
-    var price Price
+    var p models.Price
 
     // Iterate over both "OnDemand" and "Reserved" terms
     for _, reservationType := range []string{"OnDemand", "Reserved"} {
@@ -112,7 +101,7 @@ func extractSinglePrice(priceListItem map[string]interface{}) Price {
                 pricePerUnitFloat, _ := strconv.ParseFloat(pricePerUnit, 64)
                 priceDescription := dimension.(map[string]interface{})["description"].(string)
 
-                price = Price{
+                p = models.Price{
                     ID:              uuid.New().String(), // Set the ID as needed
                     ServiceType:     serviceCode,
                     InstanceType:    instanceType,
@@ -126,7 +115,7 @@ func extractSinglePrice(priceListItem map[string]interface{}) Price {
         }
     }
 
-    return price
+    return p
 }
 
 func extractInstanceType(productAttributes map[string]interface{}) (string, bool) {
@@ -150,7 +139,7 @@ func saveResponseToJson(result *pricing.GetProductsOutput) error {
     }
 
     // Write the JSON data to a file
-    outputFile := "pricing_response.json"
+    outputFile := "pricingResponse.json"
     err = os.WriteFile(outputFile, jsonData, 0644)
     if err != nil {
         return err
