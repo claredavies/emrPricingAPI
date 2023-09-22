@@ -44,15 +44,26 @@ func commonFetchPricingData(region string, filter *pricing.GetProductsInput) ([]
 
 
 //mostly used for debugging
-func FetchPricingDataJson(region string, serviceCode string) error {
+func FetchPricingDataJson(region string, serviceCode string) (*pricing.GetProductsOutput, error) {
 	filter := getInputNoFilter(serviceCode)
 	result, err := commonFetchAwsPriceList(region, filter)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	saveResponseToJson(result)
-	return nil
+	return result, nil
+}
+
+func FetchPricingDataJsonFilter(region string, serviceCode string, location string, instanceType string) (*pricing.GetProductsOutput, error) {
+	filter := defineFilter(serviceCode, location, instanceType)
+	result, err := commonFetchAwsPriceList(region, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	saveResponseToJson(result)
+	return result, nil
 }
 
 func FetchPricingData(region string, serviceCode string) ([]models.Price, error) {

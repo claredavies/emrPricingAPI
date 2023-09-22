@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added in getPrices API">
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added in getOnePrice API to show can use filters to return a particular price">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/price/priceApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +132,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695311295678</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added in getOnePrice API to show can use filters to return a particular price">
+      <option name="closed" value="true" />
+      <created>1695379881657</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1695379881657</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -143,6 +154,7 @@
     <MESSAGE value="Adding in filters as parameters e.g InstanceType" />
     <MESSAGE value="Added unit tests for aws_pricing.go" />
     <MESSAGE value="Added in getPrices API" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added in getPrices API" />
+    <MESSAGE value="Added in getOnePrice API to show can use filters to return a particular price" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added in getOnePrice API to show can use filters to return a particular price" />
   </component>
 </project>
