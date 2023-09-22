@@ -17,6 +17,16 @@ func LoadPrices() {
     prices = append(prices, newPrices...)
 }
 
+func fetchOnePrice(c echo.Context) error {
+    onePrice, _ := aws.FetchPricingDataFilter("us-east-1", "ElasticMapReduce", "US West (Oregon)", "C6g.12xlarge")
+    err := c.JSON(http.StatusOK, onePrice)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
 func getPrices(c echo.Context) error {
 	err := c.JSON(http.StatusOK, prices)
     if err != nil {
@@ -28,4 +38,5 @@ func getPrices(c echo.Context) error {
 
 func SetupRoutes(e *echo.Echo) {
     e.GET("/prices", getPrices)
+    e.GET("/onePrice", fetchOnePrice)
 }
