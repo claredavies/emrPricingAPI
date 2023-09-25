@@ -7,18 +7,29 @@ import (
 	"net/http"
 	"emrPricingAPI/models"
 	"emrPricingAPI/pkg/thirdparty/aws"
+	"emrPricingAPI/constants"
 )
 
 var prices = []models.Price{
 }
 
+//input region and service
 func LoadPrices() {
     newPrices, _ := aws.FetchPricingData("us-east-1", "ElasticMapReduce")
     prices = append(prices, newPrices...)
 }
 
-func fetchOnePrice(c echo.Context) error {
-    onePrice, _ := aws.FetchPricingDataFilter("us-east-1", "ElasticMapReduce", "US West (Oregon)", "C6g.12xlarge")
+func getPrice(c echo.Context) error {
+    region:=c.QueryParam("region")
+    serviceCode:=c.QueryParam("serviceCode")
+    location:=c.QueryParam("location")
+    instanceType:=c.QueryParam("instanceType")
+
+    if region == ""|| serviceCode == ""|| location == ""|| instanceType == ""{
+        return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
+    }
+
+    onePrice, _ := aws.FetchPricingDataFilter(region, serviceCode, location, instanceType)
     err := c.JSON(http.StatusOK, onePrice)
     if err != nil {
         return err
@@ -58,7 +69,7 @@ func getPrices(c echo.Context) error {
 
 func SetupRoutes(e *echo.Echo) {
     e.GET("/prices", getPrices)
-    e.GET("/onePrice", fetchOnePrice)
+    e.GET("/getPrice", getPrice)
     e.GET("/unstructuredJson", fetchJsonUnstructured)
     e.GET("/unstructuredJsonFilter", fetchJsonUnstructuredFilter)
 }
