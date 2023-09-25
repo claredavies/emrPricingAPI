@@ -10,3 +10,10 @@ type Price struct {
     PriceDescription string  `json:"PriceDescription"`
     UpdatedAt       string  `json:"UpdatedAt"`
 }
+
+type AddPrice struct {
+    Region          string  `json:"Region"`
+    ServiceCode     string  `json:"ServiceCode"`
+    Location        string  `json:"Location"`
+    InstanceType    string  `json:"InstanceType"`
+}
