@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added in getOnePrice API to show can use filters to return a particular price">
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Updated onePrice api to getPrice which takes in query parameters">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/price/priceApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695379881657</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Updated onePrice api to getPrice which takes in query parameters">
+      <option name="closed" value="true" />
+      <created>1695635668252</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1695635668252</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -152,6 +161,7 @@
     <MESSAGE value="Added unit tests for aws_pricing.go" />
     <MESSAGE value="Added in getPrices API" />
     <MESSAGE value="Added in getOnePrice API to show can use filters to return a particular price" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added in getOnePrice API to show can use filters to return a particular price" />
+    <MESSAGE value="Updated onePrice api to getPrice which takes in query parameters" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated onePrice api to getPrice which takes in query parameters" />
   </component>
 </project>
