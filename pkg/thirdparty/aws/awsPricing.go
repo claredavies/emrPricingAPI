@@ -166,21 +166,72 @@ func getInputNoFilter(serviceCode string) *pricing.GetProductsInput {
     return input
 }
 
-func defineFilter(serviceCode string, location string, instanceType string) *pricing.GetProductsInput {
+func getFilterEC2(serviceCode string, location string, instanceType string, capacityStatus string, operatingSystem string, tenancy string) *pricing.GetProductsInput {
     input := &pricing.GetProductsInput{
-    		ServiceCode: aws.String(serviceCode),
-    		Filters: []*pricing.Filter{
-    			{
-    				Type:  aws.String("TERM_MATCH"),
-    				Field: aws.String("location"),
-    				Value: aws.String(location),
-    			},
-    			{
-    				Type:  aws.String("TERM_MATCH"),
-    				Field: aws.String("instanceType"),
-    				Value: aws.String(instanceType), // Add the instance type filter here
-    			},
-    		},
+        ServiceCode: aws.String(serviceCode),
+        Filters: []*pricing.Filter{
+            {
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("location"),
+                Value: aws.String(location),
+            },
+            {
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("instanceType"),
+                Value: aws.String(instanceType), // Add the instance type filter here
+            },
+            {
+                //"used"
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("capacitystatus"),
+                Value: aws.String(capacityStatus), // Add the instance type filter here
+            },
+            {
+                //RHEL
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("operatingSystem"),
+                Value: aws.String(operatingSystem), // Add the instance type filter here
+            },
+            {
+                //"Dedicated"
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("tenancy"),
+                Value: aws.String(tenancy), // Add the instance type filter here
+            },
+        },
     }
     return input
+}
+
+func getFilterEMR(serviceCode string, location string, instanceType string) *pricing.GetProductsInput {
+    input := &pricing.GetProductsInput{
+        ServiceCode: aws.String(serviceCode),
+        Filters: []*pricing.Filter{
+            {
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("location"),
+                Value: aws.String(location),
+            },
+            {
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("instanceType"),
+                Value: aws.String(instanceType), // Add the instance type filter here
+            },
+        },
+    }
+    return input
+}
+
+
+
+func defineFilter(serviceCode string, location string, instanceType string) *pricing.GetProductsInput {
+    if serviceCode == "ElasticMapReduce" {
+        return getFilterEMR(serviceCode, location, instanceType)
+    }
+
+    if serviceCode == "AmazonEC2" {
+        return getFilterEC2(serviceCode, location, instanceType, "used", "RHEL", "Dedicated")
+    }
+
+    return nil
 }
