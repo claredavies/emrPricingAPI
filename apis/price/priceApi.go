@@ -2,7 +2,7 @@ package price
 
 import (
 	"errors"
-//     "fmt"
+    "fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"emrPricingAPI/models"
@@ -13,40 +13,59 @@ import (
 var prices = []models.Price{
 }
 
+func getPriceByID(id string) (models.Price, error) {
+    for _, p := range prices {
+        if p.ID == id {
+            return p, nil
+        }
+    }
+    return models.Price{}, errors.New(constants.ErrMsgPriceNotFound)
+}
+
 func LoadPrices(region string, service string) {
     newPrices, _ := aws.FetchPricingData(region, service)
     prices = append(prices, newPrices...)
 }
 
-func addPrice(c echo.Context) error {
+func createPrice(c echo.Context) error {
     var newAddPrice models.AddPrice
+    // Bind the request body to newAddPrice
     if err := c.Bind(&newAddPrice); err != nil {
         return err
     }
 
-    if errValidAddPrice := validatePrice(newAddPrice); errValidAddPrice != nil {
+    // Validate the newAddPrice
+    if err := validatePrice(newAddPrice); err != nil {
         return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgBodyAddPrice})
     }
 
-    onePrice, _ := aws.FetchPricingDataFilter(newAddPrice.Region, newAddPrice.ServiceCode, newAddPrice.Location, newAddPrice.InstanceType)
+    // Fetch pricing data based on the newAddPrice parameters
+    onePrice, err := aws.FetchPricingDataFilter(newAddPrice.Region, newAddPrice.ServiceCode, newAddPrice.Location, newAddPrice.InstanceType)
 
-    //need to handle if it's empty
-    if HasMatchingPrice(onePrice[0], prices) {
-        return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgAddPrice})
-    } else {
+    if err != nil {
+        c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgNoMatchingResultsGetPrice})
+        return err
+    }
+
+    if len(onePrice) == 0 {
+        fmt.Println("hhh")
+        return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgNoMatchingResultsGetPrice})
+    } else if len(onePrice) == 1 {
+        if HasMatchingPrice(onePrice[0], prices) {
+            return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgAddPrice})
+        }
+
         // Check for duplicates before appending
         if !HasMatchingPrice(onePrice[0], prices) {
             // If not a duplicate, append onePrice[0] to prices
             prices = append(prices, onePrice[0])
         }
+    } else {
+        return c.JSON(http.StatusInternalServerError, echo.Map{"message": constants.ErrMsgTooManyResultsReturned})
     }
 
-    err := c.JSON(http.StatusCreated, onePrice)
-    if err != nil {
-        return err
-    }
-
-    return nil
+    // Return a JSON response with the created price
+    return c.JSON(http.StatusCreated, onePrice[0])
 }
 
 func validatePrice(addPrice models.AddPrice) error {
@@ -177,7 +196,7 @@ func fetchJsonUnstructuredFilter(c echo.Context) error {
 func SetupRoutes(e *echo.Echo) {
     e.GET("/prices", getPrices)
     e.GET("/price", getPrice)
-    e.POST("/addPrice", addPrice)
+    e.POST("/prices", createPrice)
     e.GET("/unstructuredJson", fetchJsonUnstructured)
     e.GET("/unstructuredJsonFilter", fetchJsonUnstructuredFilter)
 }

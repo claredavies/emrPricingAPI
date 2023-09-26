@@ -8,6 +8,7 @@ var (
 )
 
 const (
+    ErrMsgPriceNotFound = "Price not found with that ID"
     ErrMsgParamIDRequired    = "ID parameter is required."
     ErrMsgQueryIDRequired    = "Query ID parameter is required."
     ErrInvalidJSON = "Invalid JSON"

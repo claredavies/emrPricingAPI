@@ -4,6 +4,7 @@ import (
     "encoding/json"
     "github.com/google/uuid"
     "strconv"
+//     "fmt"
     "os"
     "emrPricingAPI/models"
     "github.com/aws/aws-sdk-go/aws"

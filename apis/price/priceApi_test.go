@@ -5,7 +5,8 @@ import (
 	"testing"
 	"fmt"
     "emrPricingAPI/constants"
-// 	"encoding/json"
+	"encoding/json"
+	"emrPricingAPI/models"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -121,4 +122,89 @@ func TestGetPrice_NoResultsForQueryParamInvalidInstanceType(t *testing.T) {
     }
 }
 
-//multiple results to query params
+func TestCreatePrice_HappyPath(t *testing.T) {
+    fmt.Println("--------TestCreatePrice_HappyPath-----------")
+
+    // Create a new book object to be sent in the POST request
+    addPrice := models.AddPrice{
+        Region:       "us-east-1",
+        ServiceCode: "ElasticMapReduce",
+        Location:      "US West (Oregon)",
+        InstanceType: "c6g.12xlarge",
+    }
+
+    // Convert the new book object to JSON
+    requestBody, err := json.Marshal(addPrice)
+    if err != nil {
+        t.Fatal(err)
+    }
+
+    // Perform a POST request to create the new book
+    _, response, c := getMockRequestResponseContextWithRequestBody(http.MethodPost, "/prices", requestBody)
+
+    if assert.NoError(t, createPrice(c)) {
+        // Check if the response status code is as expected (e.g., http.StatusCreated)
+        assert.Equal(t, http.StatusCreated, response.Code)
+
+        createdPrice := getMockResponsePrice(t, response)
+        assert.Equal(t, addPrice.ServiceCode, createdPrice.ServiceType)
+        assert.Equal(t, addPrice.InstanceType, createdPrice.InstanceType)
+
+        retrievedPrice, _ := getPriceByID(createdPrice.ID)
+        assert.Equal(t, retrievedPrice, createdPrice)
+    }
+}
+
+func TestCreatePrice_InvalidRegion(t *testing.T) {
+    fmt.Println("--------TestCreatePrice_InvalidRegion-----------")
+
+    // Create a new book object to be sent in the POST request
+    addPrice := models.AddPrice{
+        Region:       "us-eas",
+        ServiceCode: "ElasticMapReduce",
+        Location:      "US West (Oregon)",
+        InstanceType: "c6g.12xlarge",
+    }
+
+    // Convert the new book object to JSON
+    requestBody, err := json.Marshal(addPrice)
+    if err != nil {
+        t.Fatal(err)
+    }
+
+    // Perform a POST request to create the new book
+    _, response, c := getMockRequestResponseContextWithRequestBody(http.MethodPost, "/prices", requestBody)
+
+    if assert.Error(t, createPrice(c)) {
+        assert.Equal(t, http.StatusBadRequest, response.Code)
+        responseError := getMockResponseError(t, response)
+        assert.Equal(t, constants.ErrMsgNoMatchingResultsGetPrice, responseError["message"])
+    }
+}
+
+func TestCreatePrice_InstanceType(t *testing.T) {
+    fmt.Println("--------TestCreatePrice_InstanceType-----------")
+
+    // Create a new book object to be sent in the POST request
+    addPrice := models.AddPrice{
+        Region:       "us-east-1",
+        ServiceCode: "ElasticMapReduce",
+        Location:      "US West (Oregon)",
+        InstanceType: "c9sksks",
+    }
+
+    // Convert the new book object to JSON
+    requestBody, err := json.Marshal(addPrice)
+    if err != nil {
+        t.Fatal(err)
+    }
+
+    // Perform a POST request to create the new book
+    _, response, c := getMockRequestResponseContextWithRequestBody(http.MethodPost, "/prices", requestBody)
+
+    if assert.NoError(t, createPrice(c)) {
+        assert.Equal(t, http.StatusBadRequest, response.Code)
+        responseError := getMockResponseError(t, response)
+        assert.Equal(t, constants.ErrMsgNoMatchingResultsGetPrice, responseError["message"])
+    }
+}
