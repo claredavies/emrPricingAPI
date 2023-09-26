@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added in functionality to handle EC2 and EMR price queries">
-      <change afterPath="$PROJECT_DIR$/apis/price/priceApi_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/price/test_helper.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/constants/errorMsgs.go" afterDir="false" />
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added unit tests for getPrice">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/price/priceApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/price/priceApi_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/price/test_helper.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/test_helper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/errorMsgs.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/errorMsgs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695728958105</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added unit tests for getPrice">
+      <option name="closed" value="true" />
+      <created>1695738490919</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1695738490919</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -196,6 +206,7 @@
     <MESSAGE value="Updated fetchJsonUnstructured and fetchJsonUnstructuredFilter to take in query parameters" />
     <MESSAGE value="Add the addPrice api to be POST" />
     <MESSAGE value="Added in functionality to handle EC2 and EMR price queries" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added in functionality to handle EC2 and EMR price queries" />
+    <MESSAGE value="Added unit tests for getPrice" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added unit tests for getPrice" />
   </component>
 </project>

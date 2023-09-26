@@ -76,7 +76,7 @@ func getMockResponsePrice(t *testing.T, response *httptest.ResponseRecorder) mod
     return responsePrice
 }
 
-func getMockResponseBooks(t *testing.T, response *httptest.ResponseRecorder) []models.Price {
+func getMockResponsePrices(t *testing.T, response *httptest.ResponseRecorder) []models.Price {
      var responsePrices []models.Price
      if err := json.Unmarshal(response.Body.Bytes(), &responsePrices); err != nil {
         t.Fatalf("Failed reading response: %s", err)

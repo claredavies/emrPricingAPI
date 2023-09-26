@@ -89,22 +89,44 @@ func getOnePriceViaQueryParams(c echo.Context) ([]models.Price, error) {
     instanceType := c.QueryParam("instanceType")
 
     if region == "" || serviceCode == "" || location == "" || instanceType == "" {
-        return nil, echo.NewHTTPError(http.StatusBadRequest, constants.ErrMsgQueryGetPrice)
+        return nil, constants.ErrQueryParameterMissing
     }
 
-    onePrice, err := aws.FetchPricingDataFilter(region, serviceCode, location, instanceType)
-    return onePrice, err
+    onePrice, errRequestError := aws.FetchPricingDataFilter(region, serviceCode, location, instanceType)
+
+    if errRequestError != nil {
+        return nil, constants.ErrNoMatchingResults
+    }
+
+    return onePrice, errRequestError
 }
 
 func getPrice(c echo.Context) error {
     onePrice, err := getOnePriceViaQueryParams(c)
 
     if err != nil {
-        c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
-        return err
+        switch err.(type) {
+        case *echo.HTTPError:
+            return err
+        case error:
+            if err == constants.ErrQueryParameterMissing {
+                c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
+                return err
+            } else if err == constants.ErrNoMatchingResults {
+                c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgNoMatchingResultsGetPrice})
+                return err
+            }
+            return err
+        }
     }
 
-    return c.JSON(http.StatusOK, onePrice)
+    if len(onePrice) == 0 {
+        return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgNoMatchingResultsGetPrice})
+    } else if len(onePrice) > 1 {
+        return c.JSON(http.StatusInternalServerError, echo.Map{"message": constants.ErrMsgTooManyResultsReturned})
+    }
+
+    return c.JSON(http.StatusOK, onePrice[0])
 }
 
 func getPrices(c echo.Context) error {
@@ -121,7 +143,7 @@ func fetchJsonUnstructured(c echo.Context) error {
     serviceCode :=c.QueryParam("serviceCode")
 
     if region == ""|| serviceCode == "" {
-                return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrices})
+        return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrices})
     }
 
     jsonResult, _ := aws.FetchPricingDataJson(region, serviceCode)
