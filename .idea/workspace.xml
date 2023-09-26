@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Add the addPrice api to be POST">
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added in functionality to handle EC2 and EMR price queries">
+      <change afterPath="$PROJECT_DIR$/apis/price/priceApi_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apis/price/test_helper.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/constants/errorMsgs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/price/priceApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,14 +32,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/Users/annemargaret/IdeaProjects/emrPricingAPI/apis/price"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apis/price" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/models" />
     </key>
@@ -161,7 +169,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695654146227</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Added in functionality to handle EC2 and EMR price queries">
+      <option name="closed" value="true" />
+      <created>1695728958105</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1695728958105</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -179,6 +195,7 @@
     <MESSAGE value="Updated onePrice api to getPrice which takes in query parameters" />
     <MESSAGE value="Updated fetchJsonUnstructured and fetchJsonUnstructuredFilter to take in query parameters" />
     <MESSAGE value="Add the addPrice api to be POST" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add the addPrice api to be POST" />
+    <MESSAGE value="Added in functionality to handle EC2 and EMR price queries" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added in functionality to handle EC2 and EMR price queries" />
   </component>
 </project>

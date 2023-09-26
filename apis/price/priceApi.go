@@ -83,13 +83,13 @@ func HasMatchingPrice(priceToCheck models.Price, prices []models.Price) bool {
 }
 
 func getOnePriceViaQueryParams(c echo.Context) ([]models.Price, error) {
-    region:=c.QueryParam("region")
-    serviceCode:=c.QueryParam("serviceCode")
-    location:=c.QueryParam("location")
-    instanceType:=c.QueryParam("instanceType")
+    region := c.QueryParam("region")
+    serviceCode := c.QueryParam("serviceCode")
+    location := c.QueryParam("location")
+    instanceType := c.QueryParam("instanceType")
 
-    if region == ""|| serviceCode == ""|| location == ""|| instanceType == ""{
-        return nil, c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
+    if region == "" || serviceCode == "" || location == "" || instanceType == "" {
+        return nil, echo.NewHTTPError(http.StatusBadRequest, constants.ErrMsgQueryGetPrice)
     }
 
     onePrice, err := aws.FetchPricingDataFilter(region, serviceCode, location, instanceType)
@@ -97,13 +97,14 @@ func getOnePriceViaQueryParams(c echo.Context) ([]models.Price, error) {
 }
 
 func getPrice(c echo.Context) error {
-    onePrice, _ := getOnePriceViaQueryParams(c)
-    err := c.JSON(http.StatusOK, onePrice)
+    onePrice, err := getOnePriceViaQueryParams(c)
+
     if err != nil {
+        c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
         return err
     }
 
-    return nil
+    return c.JSON(http.StatusOK, onePrice)
 }
 
 func getPrices(c echo.Context) error {
@@ -120,7 +121,7 @@ func fetchJsonUnstructured(c echo.Context) error {
     serviceCode :=c.QueryParam("serviceCode")
 
     if region == ""|| serviceCode == "" {
-            return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrices})
+                return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrices})
     }
 
     jsonResult, _ := aws.FetchPricingDataJson(region, serviceCode)

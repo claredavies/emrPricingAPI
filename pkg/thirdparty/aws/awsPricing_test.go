@@ -6,7 +6,7 @@ import (
 )
 
 func TestFetchPricingDataJson(t *testing.T) {
-	err := FetchPricingDataJson("us-east-1", "ElasticMapReduce")
+	_, err := FetchPricingDataJson("us-east-1", "ElasticMapReduce")
 	assert.NoError(t, err)
 }
 
