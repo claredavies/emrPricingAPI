@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added in unit tests checking getPrices with wrong params">
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added in unit tests checking createPrice">
+      <change afterPath="$PROJECT_DIR$/constants/params.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/price/priceApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/price/priceApi_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi_test.go" afterDir="false" />

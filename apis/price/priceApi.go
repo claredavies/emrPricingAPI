@@ -2,7 +2,7 @@ package price
 
 import (
 	"errors"
-    "fmt"
+//     "fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"emrPricingAPI/models"
@@ -48,7 +48,6 @@ func createPrice(c echo.Context) error {
     }
 
     if len(onePrice) == 0 {
-        fmt.Println("hhh")
         return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgNoMatchingResultsGetPrice})
     } else if len(onePrice) == 1 {
         if HasMatchingPrice(onePrice[0], prices) {
@@ -104,14 +103,14 @@ func HasMatchingPrice(priceToCheck models.Price, prices []models.Price) bool {
 func getOnePriceViaQueryParams(c echo.Context) ([]models.Price, error) {
     region := c.QueryParam("region")
     serviceCode := c.QueryParam("serviceCode")
-    location := c.QueryParam("location")
+    regionCode := c.QueryParam("regionCode")
     instanceType := c.QueryParam("instanceType")
 
-    if region == "" || serviceCode == "" || location == "" || instanceType == "" {
+    if region == "" || serviceCode == "" || regionCode == "" || instanceType == "" {
         return nil, constants.ErrQueryParameterMissing
     }
 
-    onePrice, errRequestError := aws.FetchPricingDataFilter(region, serviceCode, location, instanceType)
+    onePrice, errRequestError := aws.FetchPricingDataFilter(region, serviceCode, regionCode, instanceType)
 
     if errRequestError != nil {
         return nil, constants.ErrNoMatchingResults
@@ -177,14 +176,14 @@ func fetchJsonUnstructured(c echo.Context) error {
 func fetchJsonUnstructuredFilter(c echo.Context) error {
     region:=c.QueryParam("region")
     serviceCode:=c.QueryParam("serviceCode")
-    location:=c.QueryParam("location")
+    regionCode:=c.QueryParam("regionCode")
     instanceType:=c.QueryParam("instanceType")
 
-    if region == ""|| serviceCode == ""|| location == ""|| instanceType == ""{
+    if region == ""|| serviceCode == ""|| regionCode == ""|| instanceType == ""{
         return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
     }
 
-    jsonResult, _ := aws.FetchPricingDataJsonFilter(region, serviceCode, location, instanceType)
+    jsonResult, _ := aws.FetchPricingDataJsonFilter(region, serviceCode, regionCode, instanceType)
     err := c.JSON(http.StatusOK, jsonResult)
     if err != nil {
         return err

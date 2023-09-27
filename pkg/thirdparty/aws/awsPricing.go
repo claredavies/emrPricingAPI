@@ -56,8 +56,8 @@ func FetchPricingDataJson(region string, serviceCode string) (*pricing.GetProduc
 	return result, nil
 }
 
-func FetchPricingDataJsonFilter(region string, serviceCode string, location string, instanceType string) (*pricing.GetProductsOutput, error) {
-	filter := defineFilter(serviceCode, location, instanceType)
+func FetchPricingDataJsonFilter(region string, serviceCode string, regionCode string, instanceType string) (*pricing.GetProductsOutput, error) {
+	filter := defineFilter(serviceCode, regionCode, instanceType)
 	result, err := commonFetchAwsPriceList(region, filter)
 	if err != nil {
 		return nil, err
@@ -72,8 +72,8 @@ func FetchPricingData(region string, serviceCode string) ([]models.Price, error)
     return commonFetchPricingData(region, filter)
 }
 
-func FetchPricingDataFilter(region string, serviceCode string, location string, instanceType string) ([]models.Price, error) {
-	filter := defineFilter(serviceCode, location, instanceType)
+func FetchPricingDataFilter(region string, serviceCode string, regionCode string, instanceType string) ([]models.Price, error) {
+	filter := defineFilter(serviceCode, regionCode, instanceType)
     return commonFetchPricingData(region, filter)
 }
 
@@ -81,14 +81,14 @@ func extractPricingInformation(result *pricing.GetProductsOutput) []models.Price
     var prices []models.Price
 
     for _, priceListItem := range result.PriceList {
-        price := extractSinglePrice(priceListItem)
+        price := extractSinglePrice(priceListItem, "OnDemand")
         prices = append(prices, price)
     }
 
     return prices
 }
 
-func extractSinglePrice(priceListItem map[string]interface{}) models.Price {
+func extractSinglePrice(priceListItem map[string]interface{}, market string) models.Price {
     // Extract product attributes
     productAttributes, _ := priceListItem["product"].(map[string]interface{})["attributes"].(map[string]interface{})
     instanceType, _ := extractInstanceType(productAttributes)
@@ -98,34 +98,28 @@ func extractSinglePrice(priceListItem map[string]interface{}) models.Price {
     // Initialize price variables
     var p models.Price
 
-    // Iterate over both "OnDemand" and "Reserved" terms
-    for _, reservationType := range []string{"OnDemand", "Reserved"} {
-        terms := priceListItem["terms"].(map[string]interface{})[reservationType]
-        if terms == nil {
-            continue // Skip if the reservation type is not present for this product
-        }
+    terms := priceListItem["terms"].(map[string]interface{})[market]
 
-        // Iterate over the terms and extract the pricing information
-        for _, product := range terms.(map[string]interface{}) {
-            priceDimensions := product.(map[string]interface{})["priceDimensions"].(map[string]interface{})
-            for _, dimension := range priceDimensions {
-                pricePerUnit, _ := dimension.(map[string]interface{})["pricePerUnit"].(map[string]interface{})["USD"].(string)
-                pricePerUnitFloat, _ := strconv.ParseFloat(pricePerUnit, 64)
-                priceDescription := dimension.(map[string]interface{})["description"].(string)
+            // Iterate over the terms and extract the pricing information
+            for _, product := range terms.(map[string]interface{}) {
+                priceDimensions := product.(map[string]interface{})["priceDimensions"].(map[string]interface{})
+                for _, dimension := range priceDimensions {
+                    pricePerUnit, _ := dimension.(map[string]interface{})["pricePerUnit"].(map[string]interface{})["USD"].(string)
+                    pricePerUnitFloat, _ := strconv.ParseFloat(pricePerUnit, 64)
+                    priceDescription := dimension.(map[string]interface{})["description"].(string)
 
-                p = models.Price{
-                    ID:              uuid.New().String(), // Set the ID as needed
-                    ServiceType:     serviceCode,
-                    InstanceType:    instanceType,
-                    Market:          reservationType,
-                    Unit:            "USD",
-                    PricePerUnit:    pricePerUnitFloat,
-                    PriceDescription: priceDescription,
-                    UpdatedAt:       "", // Set the update timestamp as needed
+                    p = models.Price{
+                        ID:              uuid.New().String(), // Set the ID as needed
+                        ServiceType:     serviceCode,
+                        InstanceType:    instanceType,
+                        Market:          market,
+                        Unit:            "USD",
+                        PricePerUnit:    pricePerUnitFloat,
+                        PriceDescription: priceDescription,
+                        UpdatedAt:       "", // Set the update timestamp as needed
+                    }
                 }
             }
-        }
-    }
 
     return p
 }
@@ -167,14 +161,14 @@ func getInputNoFilter(serviceCode string) *pricing.GetProductsInput {
     return input
 }
 
-func getFilterEC2(serviceCode string, location string, instanceType string, capacityStatus string, operatingSystem string, tenancy string) *pricing.GetProductsInput {
+func getFilterEC2(serviceCode string, regionCode string, instanceType string, capacityStatus string, operatingSystem string, tenancy string) *pricing.GetProductsInput {
     input := &pricing.GetProductsInput{
         ServiceCode: aws.String(serviceCode),
         Filters: []*pricing.Filter{
             {
                 Type:  aws.String("TERM_MATCH"),
-                Field: aws.String("location"),
-                Value: aws.String(location),
+                Field: aws.String("regionCode"),
+                Value: aws.String(regionCode),
             },
             {
                 Type:  aws.String("TERM_MATCH"),
@@ -194,7 +188,7 @@ func getFilterEC2(serviceCode string, location string, instanceType string, capa
                 Value: aws.String(operatingSystem), // Add the instance type filter here
             },
             {
-                //"Dedicated"
+                //"Dedicated" - use
                 Type:  aws.String("TERM_MATCH"),
                 Field: aws.String("tenancy"),
                 Value: aws.String(tenancy), // Add the instance type filter here
@@ -204,19 +198,24 @@ func getFilterEC2(serviceCode string, location string, instanceType string, capa
     return input
 }
 
-func getFilterEMR(serviceCode string, location string, instanceType string) *pricing.GetProductsInput {
+func getFilterEMR(serviceCode string, regionCode string, instanceType string) *pricing.GetProductsInput {
     input := &pricing.GetProductsInput{
         ServiceCode: aws.String(serviceCode),
         Filters: []*pricing.Filter{
             {
                 Type:  aws.String("TERM_MATCH"),
-                Field: aws.String("location"),
-                Value: aws.String(location),
+                Field: aws.String("regionCode"),
+                Value: aws.String(regionCode),
             },
             {
                 Type:  aws.String("TERM_MATCH"),
                 Field: aws.String("instanceType"),
                 Value: aws.String(instanceType), // Add the instance type filter here
+            },
+            {
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("softwareType"),
+                Value: aws.String("EMR"), // Add the instance type filter here
             },
         },
     }
@@ -225,13 +224,13 @@ func getFilterEMR(serviceCode string, location string, instanceType string) *pri
 
 
 
-func defineFilter(serviceCode string, location string, instanceType string) *pricing.GetProductsInput {
+func defineFilter(serviceCode string, regionCode string, instanceType string) *pricing.GetProductsInput {
     if serviceCode == "ElasticMapReduce" {
-        return getFilterEMR(serviceCode, location, instanceType)
+        return getFilterEMR(serviceCode, regionCode, instanceType)
     }
 
     if serviceCode == "AmazonEC2" {
-        return getFilterEC2(serviceCode, location, instanceType, "used", "RHEL", "Dedicated")
+        return getFilterEC2(serviceCode, regionCode, instanceType, "used", "Linux", "Shared")
     }
 
     return nil
