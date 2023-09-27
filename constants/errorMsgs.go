@@ -5,6 +5,7 @@ import "errors"
 var (
     ErrQueryParameterMissing = errors.New(ErrMsgQueryGetPrice)
     ErrNoMatchingResults     = errors.New(ErrMsgNoMatchingResultsGetPrice)
+    ErrTooManyResultsReturned    = errors.New(ErrMsgTooManyResultsReturned)
 )
 
 const (
@@ -13,9 +14,7 @@ const (
     ErrMsgQueryIDRequired    = "Query ID parameter is required."
     ErrInvalidJSON = "Invalid JSON"
     ErrMsgTooManyResultsReturned = "There should only be 1 price matching the query"
-    ErrMsgQueryGetPrice    = "Need query parameters: region, serviceCode, regionCode & instanceType"
-    ErrMsgNoMatchingResultsGetPrice    = "No matching results for region, serviceCode, regionCode & instanceType"
-    ErrMsgBodyAddPrice    = "Need body parameters: region, serviceCode, location & instanceType"
-    ErrMsgQueryGetPrices    = "Need query parameters: region & serviceCode"
-    ErrMsgAddPrice    = "Price matching that region, serviceCode, location & instanceType already exists"
+    ErrMsgQueryGetPrice    = "Need query parameters: serviceCode & instanceType"
+    ErrMsgNoMatchingResultsGetPrice    = "No matching results for serviceCode & instanceType"
+    ErrMsgQueryGetPrices    = "Need query parameters: serviceCode"
 )

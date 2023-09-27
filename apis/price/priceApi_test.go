@@ -54,10 +54,10 @@ func TestGetPriceEC2_HappyPath(t *testing.T) {
 }
 
 func TestGetPrice_NoQueryParameter(t *testing.T) {
-    fmt.Println("--------TestGetBookById_NoID-----------")
+    fmt.Println("--------TestGetPrice_NoQueryParameter-----------")
     _, response, c := getMockRequestResponseContext(http.MethodGet, "/price")
 
-    if assert.Error(t, getPrice(c)) {
+    if assert.NoError(t, getPrice(c)) {
         assert.Equal(t, http.StatusBadRequest, response.Code)
         responseError := getMockResponseError(t, response)
         assert.Equal(t, constants.ErrMsgQueryGetPrice, responseError["message"])
@@ -71,7 +71,7 @@ func TestGetPrice_OnlySomeRequiredParams(t *testing.T) {
     }
     _, response, c := getMockRequestResponseContextWithQueries(http.MethodGet, "/price", queryParams)
 
-    if assert.Error(t, getPrice(c)) {
+    if assert.NoError(t, getPrice(c)) {
             assert.Equal(t, http.StatusBadRequest, response.Code)
             responseError := getMockResponseError(t, response)
             assert.Equal(t, constants.ErrMsgQueryGetPrice, responseError["message"])

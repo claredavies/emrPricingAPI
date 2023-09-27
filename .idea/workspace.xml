@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Using regionCode instead of location">
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Changed it so only query params for get price are instanceType and serviceType">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/price/priceApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/price/priceApi_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/params.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/params.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/errorMsgs.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/errorMsgs.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695821409934</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Changed it so only query params for get price are instanceType and serviceType">
+      <option name="closed" value="true" />
+      <created>1695822920661</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1695822920662</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -222,6 +229,7 @@
     <MESSAGE value="Added unit tests for getPrice" />
     <MESSAGE value="Added in unit tests checking getPrices with wrong params" />
     <MESSAGE value="Using regionCode instead of location" />
-    <option name="LAST_COMMIT_MESSAGE" value="Using regionCode instead of location" />
+    <MESSAGE value="Changed it so only query params for get price are instanceType and serviceType" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed it so only query params for get price are instanceType and serviceType" />
   </component>
 </project>
