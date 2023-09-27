@@ -7,6 +7,7 @@ import (
 //     "fmt"
     "os"
     "emrPricingAPI/models"
+    "emrPricingAPI/constants"
     "github.com/aws/aws-sdk-go/aws"
     "github.com/aws/aws-sdk-go/aws/session"
     "github.com/aws/aws-sdk-go/service/pricing"
@@ -81,7 +82,7 @@ func extractPricingInformation(result *pricing.GetProductsOutput) []models.Price
     var prices []models.Price
 
     for _, priceListItem := range result.PriceList {
-        price := extractSinglePrice(priceListItem, "OnDemand")
+        price := extractSinglePrice(priceListItem, constants.Market)
         prices = append(prices, price)
     }
 
@@ -176,19 +177,16 @@ func getFilterEC2(serviceCode string, regionCode string, instanceType string, ca
                 Value: aws.String(instanceType), // Add the instance type filter here
             },
             {
-                //"used"
                 Type:  aws.String("TERM_MATCH"),
                 Field: aws.String("capacitystatus"),
                 Value: aws.String(capacityStatus), // Add the instance type filter here
             },
             {
-                //RHEL
                 Type:  aws.String("TERM_MATCH"),
                 Field: aws.String("operatingSystem"),
                 Value: aws.String(operatingSystem), // Add the instance type filter here
             },
             {
-                //"Dedicated" - use
                 Type:  aws.String("TERM_MATCH"),
                 Field: aws.String("tenancy"),
                 Value: aws.String(tenancy), // Add the instance type filter here
@@ -198,7 +196,7 @@ func getFilterEC2(serviceCode string, regionCode string, instanceType string, ca
     return input
 }
 
-func getFilterEMR(serviceCode string, regionCode string, instanceType string) *pricing.GetProductsInput {
+func getFilterEMR(serviceCode string, regionCode string, instanceType string, softwareType string) *pricing.GetProductsInput {
     input := &pricing.GetProductsInput{
         ServiceCode: aws.String(serviceCode),
         Filters: []*pricing.Filter{
@@ -215,7 +213,7 @@ func getFilterEMR(serviceCode string, regionCode string, instanceType string) *p
             {
                 Type:  aws.String("TERM_MATCH"),
                 Field: aws.String("softwareType"),
-                Value: aws.String("EMR"), // Add the instance type filter here
+                Value: aws.String(softwareType), // Add the instance type filter here
             },
         },
     }
@@ -226,11 +224,11 @@ func getFilterEMR(serviceCode string, regionCode string, instanceType string) *p
 
 func defineFilter(serviceCode string, regionCode string, instanceType string) *pricing.GetProductsInput {
     if serviceCode == "ElasticMapReduce" {
-        return getFilterEMR(serviceCode, regionCode, instanceType)
+        return getFilterEMR(serviceCode, regionCode, instanceType, constants.SoftwareTypeEMR)
     }
 
     if serviceCode == "AmazonEC2" {
-        return getFilterEC2(serviceCode, regionCode, instanceType, "used", "Linux", "Shared")
+        return getFilterEC2(serviceCode, regionCode, instanceType, constants.CapacityStatus, constants.OperatingSystem, constants.Tenancy)
     }
 
     return nil

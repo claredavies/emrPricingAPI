@@ -68,19 +68,9 @@ func createPrice(c echo.Context) error {
 }
 
 func validatePrice(addPrice models.AddPrice) error {
-      // Check if the Title is empty
-        if addPrice.Region == "" {
-            return errors.New("Region cannot be empty")
-        }
-
-        // Check if the Author is empty
         if addPrice.ServiceCode == "" {
             return errors.New("ServiceCode cannot be empty")
         }
-
-        if addPrice.Location == "" {
-                return errors.New("Location cannot be empty")
-            }
 
         if addPrice.InstanceType == "" {
                 return errors.New("InstanceType cannot be empty")
@@ -101,16 +91,14 @@ func HasMatchingPrice(priceToCheck models.Price, prices []models.Price) bool {
 }
 
 func getOnePriceViaQueryParams(c echo.Context) ([]models.Price, error) {
-    region := c.QueryParam("region")
     serviceCode := c.QueryParam("serviceCode")
-    regionCode := c.QueryParam("regionCode")
     instanceType := c.QueryParam("instanceType")
 
-    if region == "" || serviceCode == "" || regionCode == "" || instanceType == "" {
+    if serviceCode == "" || instanceType == "" {
         return nil, constants.ErrQueryParameterMissing
     }
 
-    onePrice, errRequestError := aws.FetchPricingDataFilter(region, serviceCode, regionCode, instanceType)
+    onePrice, errRequestError := aws.FetchPricingDataFilter(constants.Region, serviceCode, constants.RegionCode, instanceType)
 
     if errRequestError != nil {
         return nil, constants.ErrNoMatchingResults
@@ -157,14 +145,13 @@ func getPrices(c echo.Context) error {
 }
 
 func fetchJsonUnstructured(c echo.Context) error {
-    region :=c.QueryParam("region")
     serviceCode :=c.QueryParam("serviceCode")
 
-    if region == ""|| serviceCode == "" {
+    if serviceCode == "" {
         return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrices})
     }
 
-    jsonResult, _ := aws.FetchPricingDataJson(region, serviceCode)
+    jsonResult, _ := aws.FetchPricingDataJson(constants.Region, serviceCode)
     err := c.JSON(http.StatusOK, jsonResult)
     if err != nil {
         return err
@@ -174,16 +161,14 @@ func fetchJsonUnstructured(c echo.Context) error {
 }
 
 func fetchJsonUnstructuredFilter(c echo.Context) error {
-    region:=c.QueryParam("region")
     serviceCode:=c.QueryParam("serviceCode")
-    regionCode:=c.QueryParam("regionCode")
     instanceType:=c.QueryParam("instanceType")
 
-    if region == ""|| serviceCode == ""|| regionCode == ""|| instanceType == ""{
+    if serviceCode == "" || instanceType == "" {
         return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
     }
 
-    jsonResult, _ := aws.FetchPricingDataJsonFilter(region, serviceCode, regionCode, instanceType)
+    jsonResult, _ := aws.FetchPricingDataJsonFilter(constants.Region, serviceCode, constants.RegionCode, instanceType)
     err := c.JSON(http.StatusOK, jsonResult)
     if err != nil {
         return err
