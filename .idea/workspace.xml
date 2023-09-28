@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Changed it so only query params for get price are instanceType and serviceType">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added Readme">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -206,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695822920662</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Added Readme">
+      <option name="closed" value="true" />
+      <created>1695895831432</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1695895831433</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -229,6 +235,7 @@
     <MESSAGE value="Added in unit tests checking getPrices with wrong params" />
     <MESSAGE value="Using regionCode instead of location" />
     <MESSAGE value="Changed it so only query params for get price are instanceType and serviceType" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed it so only query params for get price are instanceType and serviceType" />
+    <MESSAGE value="Added Readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Readme" />
   </component>
 </project>

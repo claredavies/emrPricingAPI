@@ -18,8 +18,5 @@ $go run main.go
 - $curl -X GET "http://localhost:8080/price?serviceCode=ElasticMapReduce&instanceType=m4.large"
 - $curl -X GET "http://localhost:8080/price?serviceCode=AmazonEC2&instanceType=C6g.12xlarge"
 
-## How to hit endpoints
-$go run main.go
-
 ## How to test
 $go test ./...
