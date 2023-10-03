@@ -3,9 +3,9 @@ package price
 import (
 	"errors"
     "strings"
-	"emrPricingAPI/models"
-	"emrPricingAPI/pkg/thirdparty/aws"
-	"emrPricingAPI/constants"
+	"github.com/claredavies/emrPricingAPI/models"
+	"github.com/claredavies/emrPricingAPI/pkg/thirdparty/aws"
+	"github.com/claredavies/emrPricingAPI/constants"
 	"github.com/aws/aws-sdk-go/service/pricing"
 )
 

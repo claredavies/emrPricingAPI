@@ -3,9 +3,9 @@ package price
 import(
  "testing"
  "github.com/stretchr/testify/assert"
- "emrPricingAPI/constants"
+ "github.com/claredavies/emrPricingAPI/constants"
  "strings"
- "emrPricingAPI/models"
+ "github.com/claredavies/emrPricingAPI/models"
  )
 
 func TestGetPriceHappyPath(t *testing.T) {

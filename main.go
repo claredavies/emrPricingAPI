@@ -1,7 +1,7 @@
 package main
 
 import (
-    "emrPricingAPI/apis/price"
+    "github.com/claredavies/emrPricingAPI/apis/price"
     "fmt"
 )
 
