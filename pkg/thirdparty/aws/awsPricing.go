@@ -4,7 +4,6 @@ import (
     "encoding/json"
     "github.com/google/uuid"
     "strconv"
-//     "fmt"
     "os"
     "emrPricingAPI/models"
     "emrPricingAPI/constants"
@@ -190,6 +189,11 @@ func getFilterEC2(serviceCode string, regionCode string, instanceType string, ca
                 Type:  aws.String("TERM_MATCH"),
                 Field: aws.String("tenancy"),
                 Value: aws.String(tenancy), // Add the instance type filter here
+            },
+            {
+                Type:  aws.String("TERM_MATCH"),
+                Field: aws.String("preInstalledSw"),
+                Value: aws.String("NA"), // Add the instance type filter here
             },
         },
     }

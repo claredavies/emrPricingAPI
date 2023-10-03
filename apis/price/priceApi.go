@@ -56,7 +56,6 @@ func getOnePriceViaQueryParams(c echo.Context) (models.Price, error) {
     }
 
     onePrice, errRequestError := aws.FetchPricingDataFilter(constants.Region, serviceCode, constants.RegionCode, instanceType)
-
     if errRequestError != nil {
         return models.Price{}, constants.ErrNoMatchingResults
     }
@@ -68,6 +67,23 @@ func getOnePriceViaQueryParams(c echo.Context) (models.Price, error) {
         }
 
     return onePrice[0], errRequestError
+}
+
+func fetchJsonUnstructuredFilter(c echo.Context) error {
+    serviceCode:=c.QueryParam("serviceCode")
+    instanceType:=c.QueryParam("instanceType")
+
+    if serviceCode == "" || instanceType == "" {
+        return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
+    }
+
+    jsonResult, _ := aws.FetchPricingDataJsonFilter(constants.Region, serviceCode, constants.RegionCode, instanceType)
+    err := c.JSON(http.StatusOK, jsonResult)
+    if err != nil {
+        return err
+    }
+
+    return nil
 }
 
 func getPrice(c echo.Context) error {
@@ -86,7 +102,13 @@ func getPrice(c echo.Context) error {
            prices = append(prices, onePrice)
            return c.JSON(http.StatusOK, onePrice)
         } else {
-            return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgNoMatchingResultsGetPrice})
+            if err == constants.ErrTooManyResultsReturned {
+               return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgTooManyResultsReturned})
+            } else if err == constants.ErrQueryParameterMissing {
+               return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
+            } else {
+               return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgNoMatchingResultsGetPrice})
+            }
         }
     } else {
         price := getPriceInstanceTypeServiceType(serviceCode,  instanceType, prices)
@@ -119,22 +141,7 @@ func fetchJsonUnstructured(c echo.Context) error {
     return nil
 }
 
-func fetchJsonUnstructuredFilter(c echo.Context) error {
-    serviceCode:=c.QueryParam("serviceCode")
-    instanceType:=c.QueryParam("instanceType")
 
-    if serviceCode == "" || instanceType == "" {
-        return c.JSON(http.StatusBadRequest, echo.Map{"message": constants.ErrMsgQueryGetPrice})
-    }
-
-    jsonResult, _ := aws.FetchPricingDataJsonFilter(constants.Region, serviceCode, constants.RegionCode, instanceType)
-    err := c.JSON(http.StatusOK, jsonResult)
-    if err != nil {
-        return err
-    }
-
-    return nil
-}
 
 func SetupRoutes(e *echo.Echo) {
     e.GET("/prices", getPrices)

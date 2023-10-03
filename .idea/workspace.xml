@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Added Readme">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="3087b696-6fa1-4a45-926e-d9201b43063b" name="Changes" comment="Update Readme">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/price/priceApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/apis/price/priceApi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/thirdparty/aws/awsPricing.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +214,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695895831433</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Update Readme">
+      <option name="closed" value="true" />
+      <created>1695895890593</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1695895890593</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -236,6 +246,7 @@
     <MESSAGE value="Using regionCode instead of location" />
     <MESSAGE value="Changed it so only query params for get price are instanceType and serviceType" />
     <MESSAGE value="Added Readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Readme" />
+    <MESSAGE value="Update Readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update Readme" />
   </component>
 </project>
